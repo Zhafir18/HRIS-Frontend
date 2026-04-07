@@ -13,7 +13,6 @@ export default function AttendanceSummary({ data }) {
     const diff = new Date(data.log_out_time) - new Date(data.log_in_time);
     totalHours = (diff / (1000 * 60 * 60)).toFixed(2) + " jam";
   }
-  
 
   return (
     <div className="grid grid-cols-2 gap-4">

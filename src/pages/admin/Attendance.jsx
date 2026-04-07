@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import useAdminStore from "../../store/AdminStore";
 
 export default function Attendance() {
-  const { allAttendance, fetchAllAttendance, users, fetchUsers, loading } = useAdminStore();
+  const { allAttendance, fetchAllAttendance, users, fetchUsers, loading } =
+    useAdminStore();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedUserId, setSelectedUserId] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
@@ -44,8 +45,15 @@ export default function Attendance() {
 
   const formatImageSrc = (src) => {
     if (!src) return "";
-    
-    if (src.startsWith("data:image/")) return src;
+
+    if (src.startsWith("http")) return src;
+
+    if (src.startsWith("/")) {
+      return `${import.meta.env.VITE_API_URL || "http://localhost:7000"}${src}`;
+    }
+
+    if (src.startsWith("data:image")) return src;
+
     return `data:image/jpeg;base64,${src}`;
   };
 
@@ -66,7 +74,9 @@ export default function Attendance() {
           >
             <option value="">All Users</option>
             {users.items.map((u) => (
-              <option key={u.id} value={u.id}>{u.username}</option>
+              <option key={u.id} value={u.id}>
+                {u.username}
+              </option>
             ))}
           </select>
 
@@ -116,25 +126,29 @@ export default function Attendance() {
                 <tr key={att.id} className="hover:bg-gray-50 transition-colors">
                   <td className="py-4 px-6 flex justify-center">
                     {att.face_recognition ? (
-                        <button 
-                            onClick={() => handleViewPhoto(att.face_recognition)}
-                            className="w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden hover:ring-2 hover:ring-blue-400 transition-all"
-                        >
-                            <img 
-                                src={formatImageSrc(att.face_recognition)} 
-                                alt="Recognition" 
-                                className="w-full h-full object-cover"
-                            />
-                        </button>
+                      <button
+                        onClick={() => handleViewPhoto(att.face_recognition)}
+                        className="w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden hover:ring-2 hover:ring-blue-400 transition-all"
+                      >
+                        <img
+                          src={formatImageSrc(att.face_recognition)}
+                          alt="Recognition"
+                          className="w-full h-full object-cover"
+                        />
+                      </button>
                     ) : (
-                        <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-300">
-                             <span className="text-xs">No img</span>
-                        </div>
+                      <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-300">
+                        <span className="text-xs">No img</span>
+                      </div>
                     )}
                   </td>
                   <td className="py-4 px-6">
-                    <div className="font-medium text-gray-900">{att.user?.username}</div>
-                    <div className="text-xs text-gray-500">{att.user?.email}</div>
+                    <div className="font-medium text-gray-900">
+                      {att.user?.username}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {att.user?.email}
+                    </div>
                   </td>
                   <td className="py-4 px-6 text-gray-600">
                     {new Date(att.log_in_time).toLocaleDateString("id-ID")}
@@ -143,23 +157,32 @@ export default function Attendance() {
                     {new Date(att.log_in_time).toLocaleTimeString("id-ID")}
                   </td>
                   <td className="py-4 px-6 tabular-nums text-xs">
-                    {att.log_out_time ? new Date(att.log_out_time).toLocaleTimeString() : "-"}
+                    {att.log_out_time
+                      ? new Date(att.log_out_time).toLocaleTimeString()
+                      : "-"}
                   </td>
                   <td className="py-4 px-6 text-center">
-                    <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase ${
-                      att.status === "Late" ? "bg-red-500 text-white" : "bg-green-500 text-white"
-                    }`}>
+                    <span
+                      className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase ${
+                        att.status === "Late"
+                          ? "bg-red-500 text-white"
+                          : "bg-green-500 text-white"
+                      }`}
+                    >
                       {att.status}
                     </span>
                   </td>
                 </tr>
               ))
             ) : (
-                <tr>
-                    <td colSpan="6" className="py-12 text-center text-gray-400 italic">
-                        {loading ? "Loading logs..." : "No attendance logs found."}
-                    </td>
-                </tr>
+              <tr>
+                <td
+                  colSpan="6"
+                  className="py-12 text-center text-gray-400 italic"
+                >
+                  {loading ? "Loading logs..." : "No attendance logs found."}
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
@@ -177,16 +200,16 @@ export default function Attendance() {
         title="Attendance Evidence Photo"
       >
         <div className="flex flex-col items-center">
-            {selectedPhoto && (
-                <img 
-                    src={selectedPhoto} 
-                    className="w-full h-auto rounded-xl shadow-lg border border-gray-100" 
-                    alt="Attendance Evidence" 
-                />
-            )}
-            <p className="mt-4 text-xs text-gray-400 italic">
-                This image is captured during check-in using the user's camera.
-            </p>
+          {selectedPhoto && (
+            <img
+              src={selectedPhoto}
+              className="w-full h-auto rounded-xl shadow-lg border border-gray-100"
+              alt="Attendance Evidence"
+            />
+          )}
+          <p className="mt-4 text-xs text-gray-400 italic">
+            This image is captured during check-in using the user's camera.
+          </p>
         </div>
       </Modal>
     </div>

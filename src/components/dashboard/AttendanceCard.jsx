@@ -24,7 +24,26 @@ export default function AttendanceCard({ data }) {
     setIsModalOpen(true);
   };
 
-  const handleConfirm = async (base64Image) => {
+  const handleCheckOut = async () => {
+    const result = await Swal.fire({
+      title: 'Konfirmasi Check Out',
+      text: "Apakah Anda yakin ingin melakukan check-out sekarang?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#10b981',
+      cancelButtonColor: '#ef4444',
+      confirmButtonText: 'Ya, Check Out',
+      cancelButtonText: 'Batal',
+      background: '#ffffff',
+    });
+
+    if (result.isConfirmed) {
+      await handleConfirm(null, "check-out");
+    }
+  };
+
+  const handleConfirm = async (base64Image, overrideMode = null) => {
+    const currentMode = overrideMode || modalMode;
     try {
       let currentPosition = "-6.2,106.8";
 
@@ -45,7 +64,6 @@ export default function AttendanceCard({ data }) {
         currentPosition = await getBrowserLocation();
       } catch (browserErr) {
         console.warn("Browser Geolocation failed, trying IP API:", browserErr.message);
-        
         try {
           const res = await fetch("https://get.geojs.io/v1/ip/geo.json");
           const locData = await res.json();
@@ -62,7 +80,7 @@ export default function AttendanceCard({ data }) {
         face_recognition: base64Image,
       };
 
-      if (modalMode === "check-in") {
+      if (currentMode === "check-in") {
         await checkIn(payload);
         Swal.fire({
           icon: 'success',
@@ -136,7 +154,7 @@ export default function AttendanceCard({ data }) {
 
         <Button
           variant="success"
-          onClick={() => openModal("check-out")}
+          onClick={handleCheckOut}
           disabled={loading || !isCheckedIn || isCheckedOut}
         >
           Check Out
