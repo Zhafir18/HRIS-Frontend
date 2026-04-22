@@ -24,6 +24,11 @@ const useAuthStore = create((set) => ({
     return res.data;
   },
 
+  register: async (name, email, password) => {
+    const res = await api.post("/auth/register", { name, email, password });
+    return res.data;
+  },
+
   logout: () => {
     localStorage.removeItem("token");
     set({ user: null, token: null });
