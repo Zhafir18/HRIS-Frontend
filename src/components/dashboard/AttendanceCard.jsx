@@ -75,7 +75,10 @@ export default function AttendanceCard({ data }) {
         }
       }
 
+      const [lat, lng] = currentPosition.split(",").map(Number);
       const payload = {
+        latitude: lat,
+        longitude: lng,
         location: currentPosition,
         face_recognition: base64Image,
       };
