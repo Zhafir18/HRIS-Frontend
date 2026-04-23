@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import useAdminStore from "../../store/AdminStore";
 import Button from "../../components/ui/Button";
 import Swal from "sweetalert2";
+import Wrapper from "../../components/layouts/Wrapper";
 
 export default function Users() {
   const { users, roles, fetchUsers, fetchRoles, createUser, updateUser, deleteUser, loading } = useAdminStore();
@@ -120,7 +121,8 @@ export default function Users() {
   };
 
   return (
-    <div className="space-y-6">
+    <Wrapper>
+      <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <h3 className="text-xl font-bold">Manage Users</h3>
         <div className="flex items-center gap-3 w-full md:w-auto">
@@ -252,6 +254,7 @@ export default function Users() {
           </div>
         </form>
       </Modal>
-    </div>
+      </div>
+    </Wrapper>
   );
 }

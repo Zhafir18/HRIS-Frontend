@@ -13,6 +13,8 @@ const useAdminStore = create((set) => ({
     total: 0,
     totalPages: 1,
   },
+  departments: [],
+  offices: [],
   loading: false,
 
   fetchUsers: async (params = {}) => {
@@ -71,6 +73,54 @@ const useAdminStore = create((set) => ({
 
   deleteRole: async (id) => {
     await api.delete(`/roles/${id}`);
+  },
+
+  fetchDepartments: async () => {
+    set({ loading: true });
+    try {
+      const res = await api.get("/department");
+      set({ departments: res.data.data || res.data });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  createDepartment: async (data) => {
+    const res = await api.post("/department", data);
+    return res.data;
+  },
+
+  updateDepartment: async (id, data) => {
+    const res = await api.put(`/department/${id}`, data);
+    return res.data;
+  },
+
+  deleteDepartment: async (id) => {
+    await api.delete(`/department/${id}`);
+  },
+
+  fetchOffices: async () => {
+    set({ loading: true });
+    try {
+      const res = await api.get("/office");
+      set({ offices: res.data.data || res.data });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  createOffice: async (data) => {
+    const res = await api.post("/office", data);
+    return res.data;
+  },
+
+  updateOffice: async (id, data) => {
+    const res = await api.put(`/office/${id}`, data);
+    return res.data;
+  },
+
+  deleteOffice: async (id) => {
+    await api.delete(`/office/${id}`);
   },
 
   fetchAllAttendance: async (params = {}) => {

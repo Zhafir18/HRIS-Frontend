@@ -2,6 +2,7 @@ import Pagination from "../../components/ui/Pagination";
 import Modal from "../../components/ui/Modal";
 import { useEffect, useState } from "react";
 import useAdminStore from "../../store/AdminStore";
+import Wrapper from "../../components/layouts/Wrapper";
 
 export default function Attendance() {
   const { allAttendance, fetchAllAttendance, users, fetchUsers, loading } =
@@ -63,7 +64,8 @@ export default function Attendance() {
   };
 
   return (
-    <div className="space-y-6">
+    <Wrapper>
+      <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <h3 className="text-xl font-bold">Attendance Logs</h3>
         <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
@@ -212,6 +214,7 @@ export default function Attendance() {
           </p>
         </div>
       </Modal>
-    </div>
+      </div>
+    </Wrapper>
   );
 }

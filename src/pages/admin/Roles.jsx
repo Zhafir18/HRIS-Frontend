@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import useAdminStore from "../../store/AdminStore";
 import Button from "../../components/ui/Button";
 import Swal from "sweetalert2";
+import Wrapper from "../../components/layouts/Wrapper";
 
 export default function Roles() {
   const { roles, fetchRoles, createRole, updateRole, deleteRole, loading } = useAdminStore();
@@ -98,7 +99,8 @@ export default function Roles() {
   };
 
   return (
-    <div className="space-y-6">
+    <Wrapper>
+      <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h3 className="text-xl font-bold">Manage Roles</h3>
         <Button onClick={() => openModal()}>+ Add New Role</Button>
@@ -162,6 +164,7 @@ export default function Roles() {
           </div>
         </form>
       </Modal>
-    </div>
+      </div>
+    </Wrapper>
   );
 }
