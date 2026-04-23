@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import useLeaveStore from "../../store/LeaveStore";
-import Wrapper from "../../components/layouts/Wrapper";
-import Button from "../../components/ui/Button";
-import Modal from "../../components/ui/Modal";
-import Input from "../../components/ui/Input";
-import Pagination from "../../components/ui/Pagination";
+import useLeaveStore from "../store/LeaveStore";
+import Wrapper from "../components/layouts/Wrapper";
+import Button from "../components/ui/Button";
+import Modal from "../components/ui/Modal";
+import Input from "../components/ui/Input";
+import Pagination from "../components/ui/Pagination";
 import Swal from "sweetalert2";
 
 export default function LeaveRequests() {
