@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import useAuthStore from "../store/AuthStore";
 import { useNavigate, Link } from "react-router-dom";
+import api from "../api/axios";
 import Swal from "sweetalert2";
 
 export default function Register() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [roleId, setRoleId] = useState("");
+  const [departmentId, setDepartmentId] = useState("");
+  const [roles, setRoles] = useState([]);
+  const [departments, setDepartments] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -17,10 +22,31 @@ export default function Register() {
   const navigate = useNavigate();
   const register = useAuthStore((state) => state.register);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [rolesRes, departmentsRes] = await Promise.all([
+          api.get("/roles/dropdown"),
+          api.get("/departments")
+        ]);
+        
+        // Handle both wrapped response and direct array
+        const rolesData = rolesRes.data.data || rolesRes.data;
+        const departmentsData = departmentsRes.data.data || departmentsRes.data;
+        
+        setRoles(rolesData || []);
+        setDepartments(departmentsData || []);
+      } catch (err) {
+        console.error("Failed to fetch roles or departments", err);
+      }
+    };
+    fetchData();
+  }, []);
+
   const handleRegister = async (e) => {
     e.preventDefault();
-    if (!name || !email || !password || !confirmPassword) {
-      setError("All fields are required.");
+    if (!username || !email || !password || !confirmPassword) {
+      setError("Username, email, and password are required.");
       return;
     }
     
@@ -33,7 +59,7 @@ export default function Register() {
     setError("");
 
     try {
-      await register(name, email, password);
+      await register(username, email, password, roleId || null, departmentId || null);
       Swal.fire({
         icon: 'success',
         title: 'Registration Success',
@@ -125,12 +151,12 @@ export default function Register() {
               )}
 
               <div className="space-y-1.5">
-                <label className="block text-sm font-medium text-slate-700">Full Name</label>
+                <label className="block text-sm font-medium text-slate-700">Username</label>
                 <Input
                   type="text"
-                  placeholder="John Doe"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  placeholder="johndoe"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                   className="w-full rounded-lg border-slate-300 focus:border-slate-500 focus:ring-slate-500 transition-colors bg-slate-50/50 block px-4 py-2.5"
                 />
@@ -153,6 +179,40 @@ export default function Register() {
                       <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                     </svg>
                   </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="block text-sm font-medium text-slate-700">Role</label>
+                  <select
+                    value={roleId}
+                    onChange={(e) => setRoleId(e.target.value)}
+                    className="w-full rounded-lg border-slate-300 focus:border-slate-500 focus:ring-slate-500 transition-colors bg-slate-50/50 block px-4 py-2.5 text-sm appearance-none cursor-pointer outline-none border"
+                  >
+                    <option value="">Select Role</option>
+                    {roles.map((role) => (
+                      <option key={role.id} value={role.id}>
+                        {role.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-sm font-medium text-slate-700">Department</label>
+                  <select
+                    value={departmentId}
+                    onChange={(e) => setDepartmentId(e.target.value)}
+                    className="w-full rounded-lg border-slate-300 focus:border-slate-500 focus:ring-slate-500 transition-colors bg-slate-50/50 block px-4 py-2.5 text-sm appearance-none cursor-pointer outline-none border"
+                  >
+                    <option value="">Select Department</option>
+                    {departments.map((dept) => (
+                      <option key={dept.id} value={dept.id}>
+                        {dept.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
