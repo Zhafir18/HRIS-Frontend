@@ -1,8 +1,7 @@
-import { useState } from "react";
-import Input from "../components/ui/Input";
-import Button from "../components/ui/Button";
 import useAuthStore from "../store/AuthStore";
+import useUserStore from "../store/UserStore";
 import { useNavigate, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 export default function Login() {
@@ -14,6 +13,13 @@ export default function Login() {
   
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
+  const user = useUserStore((state) => state.user);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
