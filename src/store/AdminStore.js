@@ -78,7 +78,7 @@ const useAdminStore = create((set) => ({
   fetchDepartments: async () => {
     set({ loading: true });
     try {
-      const res = await api.get("/department");
+      const res = await api.get("/departments");
       set({ departments: res.data.data || res.data });
     } finally {
       set({ loading: false });
@@ -86,23 +86,23 @@ const useAdminStore = create((set) => ({
   },
 
   createDepartment: async (data) => {
-    const res = await api.post("/department", data);
+    const res = await api.post("/departments", data);
     return res.data;
   },
 
   updateDepartment: async (id, data) => {
-    const res = await api.put(`/department/${id}`, data);
+    const res = await api.put(`/departments/${id}`, data);
     return res.data;
   },
 
   deleteDepartment: async (id) => {
-    await api.delete(`/department/${id}`);
+    await api.delete(`/departments/${id}`);
   },
 
   fetchOffices: async () => {
     set({ loading: true });
     try {
-      const res = await api.get("/office");
+      const res = await api.get("/offices");
       set({ offices: res.data.data || res.data });
     } finally {
       set({ loading: false });
@@ -110,17 +110,17 @@ const useAdminStore = create((set) => ({
   },
 
   createOffice: async (data) => {
-    const res = await api.post("/office", data);
+    const res = await api.post("/offices", data);
     return res.data;
   },
 
   updateOffice: async (id, data) => {
-    const res = await api.put(`/office/${id}`, data);
+    const res = await api.put(`/offices/${id}`, data);
     return res.data;
   },
 
   deleteOffice: async (id) => {
-    await api.delete(`/office/${id}`);
+    await api.delete(`/offices/${id}`);
   },
 
   fetchAllAttendance: async (params = {}) => {
