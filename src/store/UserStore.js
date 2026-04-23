@@ -11,8 +11,19 @@ const userStore = create((set) => ({
     set({ user: res.data.data || res.data });
   },
 
+  getMe: async () => {
+    try {
+      const res = await api.get("/users/me");
+      set({ user: res.data.data || res.data });
+      return res.data.data || res.data;
+    } catch (error) {
+      set({ user: null });
+      throw error;
+    }
+  },
+
   fetchUserById: async (id) => {
-    const res = await api.get(`/users/me`);
+    const res = await api.get(`/users/${id}`);
     set({ user: res.data.data || res.data });
   },
 

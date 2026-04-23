@@ -10,11 +10,11 @@ export default function Dashboard() {
   const historyData = useAttendanceStore((state) => state.history);
   const user = useUserStore((state) => state.user);
   const fetchDashboard = useAttendanceStore((state) => state.fetchDashboard);
-  const fetchUserById = useUserStore((state) => state.fetchUserById);
+  const getMe = useUserStore((state) => state.getMe);
 
   const fetchToday = async () => {
     try {
-      await Promise.all([fetchDashboard(), fetchUserById()]);
+      await Promise.all([fetchDashboard(), getMe()]);
     } catch (error) {
       console.log(error);
     }

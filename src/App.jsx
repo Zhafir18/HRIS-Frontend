@@ -9,7 +9,18 @@ import AttendanceLogs from "./pages/admin/Attendance";
 import Departments from "./pages/admin/Departments";
 import Offices from "./pages/admin/Offices";
 
+import { useEffect } from "react";
+import useUserStore from "./store/UserStore";
+
 function App() {
+  const getMe = useUserStore((state) => state.getMe);
+
+  useEffect(() => {
+    getMe().catch(() => {
+      console.log("No active session");
+    });
+  }, [getMe]);
+
   return (
     <BrowserRouter>
       <Routes>
