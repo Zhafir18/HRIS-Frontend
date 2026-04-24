@@ -14,6 +14,8 @@ import useUserStore from "./store/UserStore";
 
 import LeaveRequests from "./pages/LeaveRequests";
 import ManageLeaves from "./pages/admin/ManageLeaves";
+import Salary from "./pages/Salary";
+import ManageSalary from "./pages/admin/ManageSalary";
 
 function App() {
   const getMe = useUserStore((state) => state.getMe);
@@ -37,6 +39,8 @@ function App() {
         <Route path="/admin/departments" element={<Departments />} />
         <Route path="/admin/offices" element={<Offices />} />
         <Route path="/admin/leaves" element={<ManageLeaves />} />
+        <Route path="/admin/salary" element={<ManageSalary />} />
+        <Route path="/salary" element={<Salary />} />
         <Route path="/admin" element={<Navigate to="/admin/attendance" />} />
 
         <Route path="*" element={<Navigate to="/" />} />
