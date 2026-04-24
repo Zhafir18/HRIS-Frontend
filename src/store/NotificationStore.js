@@ -12,12 +12,12 @@ const useNotificationStore = create((set, get) => ({
     if (get().socket) return;
 
     // Extract base URL from VITE_API_URL or fallback (removing /api)
+    // Force backend port 5000 if it accidentally points to frontend port 5001
     const apiUrl = import.meta.env.VITE_API_URL || "http://103.197.191.97:5000/api";
-    const socketUrl = apiUrl.replace(/\/api$/, "");
+    const socketUrl = apiUrl.replace(/:5001/, ":5000").replace(/\/api$/, "");
 
     const socket = io(socketUrl, {
       withCredentials: true,
-      transports: ["websocket"],
     });
 
     socket.on("connect", () => {
