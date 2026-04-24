@@ -10,12 +10,13 @@ const useSalaryStore = create((set) => ({
     try {
       const url = userId ? `/salary?page=${page}&limit=${limit}&userId=${userId}` : `/salary?page=${page}&limit=${limit}`;
       const res = await api.get(url);
-      const data = res.data?.data?.data || res.data?.data || res.data;
+      
+      // The ResponseInterceptor puts the array in 'data' and pagination info in 'meta'
+      const items = res.data.data || [];
+      const total = res.data.meta?.total || res.data.total || 0;
+      
       set({ 
-        salaries: { 
-          items: data.data || [], 
-          total: data.total || 0 
-        }, 
+        salaries: { items, total }, 
         loading: false 
       });
     } catch (error) {
