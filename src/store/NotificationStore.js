@@ -25,14 +25,34 @@ const useNotificationStore = create((set, get) => ({
     });
 
     socket.on("connect", () => {
-      console.log("WebSocket connected");
+      console.log("[WS] Connected to server successfully!");
+    });
+
+    socket.on("connect_error", (err) => {
+      console.log("[WS] Connection Error:", err.message);
     });
 
     socket.on("notification", (newNotification) => {
+      console.log("[WS] New notification received:", newNotification);
+      
+      // Update state
       set((state) => ({
         notifications: [newNotification, ...state.notifications],
         unreadCount: state.unreadCount + 1,
       }));
+
+      // Add a visual toast for debugging
+      import("sweetalert2").then((Swal) => {
+        Swal.default.fire({
+          title: newNotification.title,
+          text: newNotification.message,
+          icon: "info",
+          toast: true,
+          position: "top-end",
+          timer: 3000,
+          showConfirmButton: false,
+        });
+      });
     });
 
     set({ socket });
