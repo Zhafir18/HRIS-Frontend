@@ -90,7 +90,7 @@ export default function Header({ onLogout }) {
                 )}
               </div>
               <div className="max-h-80 overflow-y-auto">
-                {notifications.length === 0 ? (
+                {(!notifications || notifications.length === 0) ? (
                   <div className="px-4 py-8 text-center text-slate-500 text-sm">
                     No notifications yet
                   </div>

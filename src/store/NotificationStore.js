@@ -10,7 +10,9 @@ const useNotificationStore = create((set, get) => ({
     set({ loading: true });
     try {
       const res = await api.get("/notification");
-      const { notifications, unreadCount } = res.data.data;
+      const payload = res.data?.data?.data || res.data?.data || {};
+      const notifications = payload.notifications || [];
+      const unreadCount = payload.unreadCount || 0;
       set({ notifications, unreadCount, loading: false });
     } catch (error) {
       console.log("Error fetching notifications:", error);
