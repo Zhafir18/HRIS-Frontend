@@ -1,10 +1,46 @@
 import { create } from "zustand";
 import api from "../api/axios";
+import { io } from "socket.io-client";
 
 const useNotificationStore = create((set, get) => ({
   notifications: [],
   unreadCount: 0,
   loading: false,
+  socket: null,
+
+  initializeSocket: () => {
+    if (get().socket) return;
+
+    // Extract base URL from VITE_API_URL or fallback (removing /api)
+    const apiUrl = import.meta.env.VITE_API_URL || "http://103.197.191.97:5000/api";
+    const socketUrl = apiUrl.replace(/\/api$/, "");
+
+    const socket = io(socketUrl, {
+      withCredentials: true,
+      transports: ["websocket"],
+    });
+
+    socket.on("connect", () => {
+      console.log("WebSocket connected");
+    });
+
+    socket.on("notification", (newNotification) => {
+      set((state) => ({
+        notifications: [newNotification, ...state.notifications],
+        unreadCount: state.unreadCount + 1,
+      }));
+    });
+
+    set({ socket });
+  },
+
+  disconnectSocket: () => {
+    const socket = get().socket;
+    if (socket) {
+      socket.disconnect();
+      set({ socket: null });
+    }
+  },
 
   fetchNotifications: async () => {
     set({ loading: true });

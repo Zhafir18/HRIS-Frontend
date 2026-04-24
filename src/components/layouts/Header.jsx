@@ -9,13 +9,15 @@ export default function Header({ onLogout }) {
   const notifRef = useRef(null);
   
   const user = useUserStore((state) => state.user);
-  const { notifications, unreadCount, fetchNotifications, markAsRead, markAllAsRead } = useNotificationStore();
+  const { notifications, unreadCount, fetchNotifications, markAsRead, markAllAsRead, initializeSocket, disconnectSocket } = useNotificationStore();
 
   useEffect(() => {
     if (user) {
       fetchNotifications();
+      initializeSocket();
     }
-  }, [user, fetchNotifications]);
+    return () => disconnectSocket();
+  }, [user, fetchNotifications, initializeSocket, disconnectSocket]);
 
   useEffect(() => {
     function handleClickOutside(event) {
