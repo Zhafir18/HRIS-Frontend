@@ -37,7 +37,9 @@ export default function Dashboard() {
       const fetchAdminStats = async () => {
         try {
           const res = await api.get("/dashboard");
-          if (res.data && res.data.data) {
+          if (res.data && res.data.data && res.data.data.data) {
+            setDashboardStats(res.data.data.data);
+          } else if (res.data && res.data.data) {
             setDashboardStats(res.data.data);
           }
         } catch (error) {
