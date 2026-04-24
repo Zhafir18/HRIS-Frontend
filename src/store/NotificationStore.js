@@ -21,7 +21,6 @@ const useNotificationStore = create((set, get) => ({
     const token = localStorage.getItem("access_token");
 
     const socket = io(socketUrl, {
-      withCredentials: true,
       auth: { token },
     });
 
