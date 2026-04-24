@@ -16,11 +16,8 @@ const useNotificationStore = create((set, get) => ({
     const apiUrl = import.meta.env.VITE_API_URL || "http://103.197.191.97:5000/api";
     const socketUrl = apiUrl.replace(/:5001/, ":5000").replace(/\/api$/, "");
 
-    // Get token from cookies manually to be safe
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("access_token="))
-      ?.split("=")[1];
+    // Get token from localStorage
+    const token = localStorage.getItem("access_token");
 
     const socket = io(socketUrl, {
       withCredentials: true,

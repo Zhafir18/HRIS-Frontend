@@ -8,7 +8,11 @@ const useAuthStore = create((set) => ({
 
   login: async (email, password) => {
     const res = await api.post("/auth/login", { email, password });
-    return res.data;
+    const data = res.data?.data || res.data;
+    if (data.access_token) {
+      localStorage.setItem("access_token", data.access_token);
+    }
+    return data;
   },
 
   register: async (username, email, password, role_id, department_id) => {
@@ -25,6 +29,7 @@ const useAuthStore = create((set) => ({
   logout: async () => {
     try {
       await api.post("/auth/logout");
+      localStorage.removeItem("access_token");
     } finally {
       set({ user: null });
     }
