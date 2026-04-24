@@ -9,6 +9,7 @@ const useNotificationStore = create((set, get) => ({
   socket: null,
 
   initializeSocket: () => {
+    console.log("[WS] initializeSocket called...");
     if (get().socket) return;
 
     // Extract base URL from VITE_API_URL or fallback (removing /api)

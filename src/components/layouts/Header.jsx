@@ -12,9 +12,9 @@ export default function Header({ onLogout }) {
   const { notifications, unreadCount, fetchNotifications, markAsRead, markAllAsRead, initializeSocket, disconnectSocket } = useNotificationStore();
 
   useEffect(() => {
+    initializeSocket();
     if (user) {
       fetchNotifications();
-      initializeSocket();
     }
     return () => disconnectSocket();
   }, [user, fetchNotifications, initializeSocket, disconnectSocket]);
