@@ -142,7 +142,7 @@ export default function Login() {
               <div className="space-y-1.5 relative">
                 <div className="flex items-center justify-between">
                   <label className="block text-sm font-medium text-slate-700">Password</label>
-                  <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+                  <Link to="/forgot-password" title="Lupa password?" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">Forgot password?</Link>
                 </div>
                 <div className="relative">
                   <Input
