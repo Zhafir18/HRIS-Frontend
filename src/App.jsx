@@ -18,6 +18,7 @@ import LeaveRequests from "./pages/LeaveRequests";
 import ManageLeaves from "./pages/admin/ManageLeaves";
 import Salary from "./pages/Salary";
 import ManageSalary from "./pages/admin/ManageSalary";
+import ChatWidget from "./components/ChatWidget";
 
 function App() {
   const getMe = useUserStore((state) => state.getMe);
@@ -49,6 +50,7 @@ function App() {
 
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
+      <ChatWidget />
     </BrowserRouter>
   );
 }
