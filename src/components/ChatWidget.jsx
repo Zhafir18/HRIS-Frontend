@@ -30,7 +30,8 @@ const ChatWidget = () => {
     try {
       const response = await api.post('/chatbot/chat', {  
         message: input,
-        history: messages,
+        // Gemini requires history to start with a 'user' message
+        history: messages.filter((msg, index) => !(index === 0 && msg.role === 'model')),
       });
 
       const botMessage = { role: 'model', parts: [{ text: response.data.response }] };
